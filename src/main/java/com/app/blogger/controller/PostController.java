@@ -1,11 +1,11 @@
 package com.app.blogger.controller;
 
 import com.app.blogger.dto.PostDto;
-import com.app.blogger.model.Post;
+import com.app.blogger.dto.PostResponse;
 import com.app.blogger.service.PostService;
+import com.app.blogger.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +28,13 @@ public class PostController {
 
     // Get all posts
     @GetMapping
-    public List<PostDto> getAllPosts() {
-        return postService.getAllPosts();
+    public PostResponse getAllPosts(
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+    ) {
+        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
     }
 
     // Get post by id

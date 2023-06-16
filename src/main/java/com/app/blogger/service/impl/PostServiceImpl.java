@@ -1,14 +1,18 @@
 package com.app.blogger.service.impl;
 
 import com.app.blogger.dto.PostDto;
+import com.app.blogger.dto.PostResponse;
 import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Post;
 import com.app.blogger.repository.PostRepository;
 import com.app.blogger.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,9 +32,28 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream().map(post -> toDto(post)).collect(Collectors.toList());
+    public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+        Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(sortDir)
+                ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        List<Post> postList = posts.getContent();
+
+        List<PostDto> content = posts.stream().map(post -> toDto(post)).collect(Collectors.toList());
+
+        PostResponse postResponse = new PostResponse();
+        postResponse.setContent(content);
+        postResponse.setPageNo(posts.getNumber());
+        postResponse.setPageSize(posts.getSize());
+        postResponse.setTotalElements(posts.getTotalElements());
+        postResponse.setTotalPages(posts.getTotalPages());
+        postResponse.setLast(posts.isLast());
+
+        return postResponse;
     }
 
     @Override
