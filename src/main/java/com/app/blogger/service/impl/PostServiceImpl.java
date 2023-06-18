@@ -6,6 +6,7 @@ import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Post;
 import com.app.blogger.repository.PostRepository;
 import com.app.blogger.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class PostServiceImpl implements PostService {
 
         List<Post> postList = posts.getContent();
 
-        List<PostDto> content = posts.stream().map(post -> toDto(post)).collect(Collectors.toList());
+        List<PostDto> content = postList.stream().map(post -> toDto(post)).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
         postResponse.setContent(content);
@@ -83,21 +86,21 @@ public class PostServiceImpl implements PostService {
 
     // Dto to entity
     private Post toEntity(PostDto postDto) {
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
-        return post;
+//        Post post = new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
+        return modelMapper.map(postDto, Post.class);
     }
 
     // Entity to dto
     private PostDto toDto(Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setTitle(post.getTitle());
-        postDto.setDescription(post.getDescription());
-        postDto.setContent(post.getContent());
-        return postDto;
+//        PostDto postDto = new PostDto();
+//        postDto.setId(post.getId());
+//        postDto.setTitle(post.getTitle());
+//        postDto.setDescription(post.getDescription());
+//        postDto.setContent(post.getContent());
+        return modelMapper.map(post, PostDto.class);
     }
 
 }
