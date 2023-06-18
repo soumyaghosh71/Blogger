@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("posts")
+@RequestMapping("/posts")
 public class PostController {
 
     private PostService postService;
