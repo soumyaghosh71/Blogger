@@ -1,4 +1,4 @@
-package com.app.blogger.dto;
+package com.app.blogger.payload;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

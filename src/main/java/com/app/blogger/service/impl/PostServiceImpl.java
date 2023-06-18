@@ -1,7 +1,7 @@
 package com.app.blogger.service.impl;
 
-import com.app.blogger.dto.PostDto;
-import com.app.blogger.dto.PostResponse;
+import com.app.blogger.payload.PostDto;
+import com.app.blogger.payload.PostResponse;
 import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Post;
 import com.app.blogger.repository.PostRepository;

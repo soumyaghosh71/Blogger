@@ -1,9 +1,7 @@
 package com.app.blogger.service;
 
-import com.app.blogger.dto.PostDto;
-import com.app.blogger.dto.PostResponse;
-
-import java.util.List;
+import com.app.blogger.payload.PostDto;
+import com.app.blogger.payload.PostResponse;
 
 public interface PostService {
     PostDto createPost(PostDto postDto);

@@ -1,6 +1,6 @@
 package com.app.blogger.service.impl;
 
-import com.app.blogger.dto.CommentDto;
+import com.app.blogger.payload.CommentDto;
 import com.app.blogger.exception.BlogAPIException;
 import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Comment;

@@ -1,6 +1,6 @@
 package com.app.blogger.service;
 
-import com.app.blogger.dto.CommentDto;
+import com.app.blogger.payload.CommentDto;
 
 import java.util.List;
 
