@@ -5,6 +5,7 @@ import com.app.blogger.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CommentDto> createComment(@PathVariable Long postId, @Valid @RequestBody CommentDto commentDto) {
         return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
     }
@@ -35,12 +37,14 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long id, @Valid @RequestBody CommentDto commentDto) {
         CommentDto updatedCommentDto = commentService.updateComment(postId, id, commentDto);
         return ResponseEntity.ok(updatedCommentDto);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long id) {
         commentService.deleteComment(postId, id);
         return new ResponseEntity<>("Comment deleted successfully !", HttpStatus.OK);
