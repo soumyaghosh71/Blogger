@@ -1,5 +1,6 @@
 package com.app.blogger.controller;
 
+import com.app.blogger.model.User;
 import com.app.blogger.payload.LoginDto;
 import com.app.blogger.payload.RegisterDto;
 import com.app.blogger.service.AuthService;
@@ -28,8 +29,8 @@ public class AuthController {
 
     // Register api
     @PostMapping(value = {"/register", "signup"})
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        String response = authService.register(registerDto);
+    public ResponseEntity<User> register(@RequestBody RegisterDto registerDto) {
+        User response = authService.register(registerDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

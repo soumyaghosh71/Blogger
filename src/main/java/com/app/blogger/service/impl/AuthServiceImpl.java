@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String register(RegisterDto registerDto) {
+    public User register(RegisterDto registerDto) {
         // check for username exist in database
         if (userRepository.existsByUsername(registerDto.getUsername())) {
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Username already exists!");
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
         Role userRole = roleRepository.findByName("ROLE_USER").get();
         roles.add(userRole);
         user.setRoles(roles);
-        userRepository.save(user);
-        return "User registered successfully.";
+        User saved = userRepository.save(user);
+        return saved;
     }
 }
