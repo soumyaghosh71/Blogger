@@ -1,5 +1,6 @@
 package com.app.blogger.controller;
 
+import com.app.blogger.model.Post;
 import com.app.blogger.payload.PostDto;
 import com.app.blogger.payload.PostResponse;
 import com.app.blogger.service.PostService;
@@ -23,7 +24,7 @@ public class PostController {
     // Create a post
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
+    public ResponseEntity<Post> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
@@ -40,15 +41,15 @@ public class PostController {
 
     // Get post by id
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
     // Update a post
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable Long id) {
-        PostDto updatePostDto = postService.updatePost(postDto, id);
+    public ResponseEntity<Post> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable Long id) {
+        Post updatePostDto = postService.updatePost(postDto, id);
         return new ResponseEntity<>(updatePostDto, HttpStatus.OK);
     }
 

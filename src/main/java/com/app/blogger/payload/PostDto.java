@@ -20,5 +20,5 @@ public class PostDto {
 
     @NotEmpty(message = "Post content should not be null/empty")
     private String content;
-    private Set<CommentDto> comments;
+
 }

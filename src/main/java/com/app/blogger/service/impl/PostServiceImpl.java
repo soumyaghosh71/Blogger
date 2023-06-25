@@ -28,10 +28,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto createPost(PostDto postDto) {
+    public Post createPost(PostDto postDto) {
         Post post = toEntity(postDto);
-        Post newPost = postRepository.save(post);
-        return toDto(newPost);
+        return postRepository.save(post);
     }
 
     @Override
@@ -60,21 +59,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPostById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-        return toDto(post);
+    public Post getPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
     }
 
     @Override
-    public PostDto updatePost(PostDto postDto, Long id) {
+    public Post updatePost(PostDto postDto, Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
-
-        Post updatePost = postRepository.save(post);
-        return toDto(updatePost);
+        return postRepository.save(post);
     }
 
     @Override

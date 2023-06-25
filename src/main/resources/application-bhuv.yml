@@ -10,3 +10,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+server:
+  port: "8082"
+app:
+  blogger:
+    comment:
+      url: "http://localhost:8083"

@@ -1,7 +1,9 @@
 package com.app.blogger.controller;
 
+import com.app.blogger.model.Comment;
 import com.app.blogger.payload.CommentDto;
 import com.app.blogger.service.CommentService;
+import com.app.blogger.service.impl.CommentServiceWithRestTemplate;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +18,30 @@ public class CommentController {
 
     private CommentService commentService;
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentServiceWithRestTemplate commentService) {
         this.commentService = commentService;
     }
 
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CommentDto> createComment(@PathVariable Long postId, @Valid @RequestBody CommentDto commentDto) {
-        return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
+    @PostMapping()
+//    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Comment> createComment(@PathVariable Long postId, @RequestHeader(name = "userId") Long userId, @Valid @RequestBody CommentDto commentDto) {
+        return commentService.createComment(postId, userId, commentDto);
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentDto>> getCommentsByPostId(@PathVariable Long postId) {
-        return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
+        return commentService.getCommentsByPostId(postId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentDto> getCommentById(@PathVariable Long postId, @PathVariable Long id) {
-        return ResponseEntity.ok(commentService.getCommentById(postId, id));
+    public ResponseEntity<Comment> getCommentById(@PathVariable Long postId, @PathVariable Long id) {
+        return commentService.getCommentById(postId, id);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long id, @Valid @RequestBody CommentDto commentDto) {
-        CommentDto updatedCommentDto = commentService.updateComment(postId, id, commentDto);
-        return ResponseEntity.ok(updatedCommentDto);
+    public ResponseEntity<Comment> updateComment(@PathVariable Long postId, @PathVariable Long id, @Valid @RequestBody CommentDto commentDto) {
+        return commentService.updateComment(postId, id, commentDto);
     }
 
     @DeleteMapping("/{id}")
