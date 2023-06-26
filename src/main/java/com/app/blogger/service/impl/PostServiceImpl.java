@@ -1,16 +1,22 @@
 package com.app.blogger.service.impl;
 
-import com.app.blogger.payload.PostDto;
-import com.app.blogger.payload.PostResponse;
+import com.app.blogger.exception.BlogAPIException;
 import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Post;
+import com.app.blogger.model.User;
+import com.app.blogger.payload.PostDto;
+import com.app.blogger.payload.PostResponse;
 import com.app.blogger.repository.PostRepository;
 import com.app.blogger.service.PostService;
+import com.app.blogger.service.UserProxyService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +28,9 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
     private ModelMapper modelMapper;
 
+    @Autowired
+    private UserProxyService userProxyService;
+
     public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
@@ -29,15 +38,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post createPost(PostDto postDto) {
+        ResponseEntity<User> user = userProxyService.findUser(String.valueOf(postDto.getId()), "id");
+        if (user.getStatusCode().isError() || user.getBody() == null) {
+            throw new BlogAPIException(HttpStatus.resolve(user.getStatusCode().value()), "Error");
+        }
         Post post = toEntity(postDto);
+        post.setUser(user.getBody());
         return postRepository.save(post);
     }
 
     @Override
     public PostResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-        Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(sortDir)
-                ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort sort = Sort.Direction.ASC.name().equalsIgnoreCase(sortDir) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
@@ -60,13 +73,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
     }
 
     @Override
     public Post updatePost(PostDto postDto, Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        ResponseEntity<User> user = userProxyService.findUser(String.valueOf(postDto.getId()), "id");
+        if (user.getStatusCode().isError() || user.getBody() == null) {
+            throw new BlogAPIException(HttpStatus.resolve(user.getStatusCode().value()), "Error");
+        }
+        if (!user.getBody().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Incorrect user is updating blog.");
+        }
+
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());

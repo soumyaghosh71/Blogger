@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.Set;
-
 @Data
 public class PostDto {
     private Long id;
@@ -20,5 +18,8 @@ public class PostDto {
 
     @NotEmpty(message = "Post content should not be null/empty")
     private String content;
+
+    @NotEmpty(message = "A valid user id is required")
+    private Long userId;
 
 }
