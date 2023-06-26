@@ -7,6 +7,7 @@ import com.app.blogger.payload.LoginDto;
 import com.app.blogger.payload.RegisterDto;
 import com.app.blogger.repository.RoleRepository;
 import com.app.blogger.repository.UserRepository;
+import com.app.blogger.security.JwtTokenProvider;
 import com.app.blogger.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +27,14 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -40,7 +43,9 @@ public class AuthServiceImpl implements AuthService {
                 loginDto.getEmailOrUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged in successfully.";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
     @Override
