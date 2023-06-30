@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -42,6 +44,13 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    // Get post by category
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable Long categoryId) {
+        List<PostDto> postDtoList = postService.getPostByCategory(categoryId);
+        return ResponseEntity.ok(postDtoList);
     }
 
     // Update a post
