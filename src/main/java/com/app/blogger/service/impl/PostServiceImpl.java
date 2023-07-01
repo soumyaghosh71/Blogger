@@ -1,10 +1,10 @@
 package com.app.blogger.service.impl;
 
+import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Category;
+import com.app.blogger.model.Post;
 import com.app.blogger.payload.PostDto;
 import com.app.blogger.payload.PostResponse;
-import com.app.blogger.exception.ResourceNotFoundException;
-import com.app.blogger.model.Post;
 import com.app.blogger.repository.CategoryRepository;
 import com.app.blogger.repository.PostRepository;
 import com.app.blogger.service.PostService;

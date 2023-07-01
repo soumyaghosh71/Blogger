@@ -1,2 +1,3 @@
 # Blogger
-An application to create blogs and add commnets.
+
+An application to create blogs and add comments.

@@ -13,29 +13,29 @@ import org.springframework.context.annotation.Bean;
 @ServletComponentScan
 @SpringBootApplication
 @OpenAPIDefinition(
-		info = @Info(
-				title = "Blogger app REST APIs",
-				description = "Blogger app REST API Documentation",
-				version = "v1.0",
-				contact = @Contact(
-						name = "Soumya Ghosh",
-						email = "soumya.ghosh71@gmail.com"
-				)
-		),
-		externalDocs = @ExternalDocumentation(
-				description = "Blogger app Documentation",
-				url = "https://github.com/soumyaghosh71/Blogger"
-		)
+        info = @Info(
+                title = "Blogger app REST APIs",
+                description = "Blogger app REST API Documentation",
+                version = "v1.0",
+                contact = @Contact(
+                        name = "Soumya Ghosh",
+                        email = "soumya.ghosh71@gmail.com"
+                )
+        ),
+        externalDocs = @ExternalDocumentation(
+                description = "Blogger app Documentation",
+                url = "https://github.com/soumyaghosh71/Blogger"
+        )
 )
 public class BloggerApplication {
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BloggerApplication.class, args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(BloggerApplication.class, args);
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
 }

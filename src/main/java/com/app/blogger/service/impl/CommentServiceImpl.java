@@ -1,10 +1,10 @@
 package com.app.blogger.service.impl;
 
-import com.app.blogger.payload.CommentDto;
 import com.app.blogger.exception.BlogAPIException;
 import com.app.blogger.exception.ResourceNotFoundException;
 import com.app.blogger.model.Comment;
 import com.app.blogger.model.Post;
+import com.app.blogger.payload.CommentDto;
 import com.app.blogger.repository.CommentRepository;
 import com.app.blogger.repository.PostRepository;
 import com.app.blogger.service.CommentService;
@@ -31,23 +31,22 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
-        Comment comment = toEntity(commentDto);
+        Comment comment = modelMapper.map(commentDto, Comment.class);
         comment.setPost(post);
         Comment newComment = commentRepository.save(comment);
-        return toDto(newComment);
+        return modelMapper.map(newComment, CommentDto.class);
     }
 
     @Override
     public List<CommentDto> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
-        return comments.stream().map(comment -> toDto(comment)).collect(Collectors.toList());
+        return comments.stream().map(comment -> modelMapper.map(comment, CommentDto.class)).collect(Collectors.toList());
     }
 
     @Override
     public CommentDto getCommentById(Long postId, Long id) {
         Comment comment = validateComment(postId, id);
-
-        return toDto(comment);
+        return modelMapper.map(comment, CommentDto.class);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setBody(commentDto.getBody());
 
         Comment updateComment = commentRepository.save(comment);
-        return toDto(updateComment);
+        return modelMapper.map(updateComment, CommentDto.class);
     }
 
     @Override
@@ -76,23 +75,5 @@ public class CommentServiceImpl implements CommentService {
         if (!comment.getPost().getId().equals(post.getId()))
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "The comment does not belong to the post.");
         return comment;
-    }
-
-    private Comment toEntity(CommentDto commentDto) {
-//        Comment comment = new Comment();
-//        comment.setId(commentDto.getId());
-//        comment.setName(commentDto.getName());
-//        comment.setEmail(commentDto.getEmail());
-//        comment.setBody(commentDto.getBody());
-        return modelMapper.map(commentDto, Comment.class);
-    }
-
-    private CommentDto toDto(Comment comment) {
-//        CommentDto commentDto = new CommentDto();
-//        commentDto.setId(comment.getId());
-//        commentDto.setName(comment.getName());
-//        commentDto.setEmail(comment.getEmail());
-//        commentDto.setBody(comment.getBody());
-        return modelMapper.map(comment, CommentDto.class);
     }
 }
