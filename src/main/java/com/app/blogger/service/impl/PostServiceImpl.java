@@ -97,4 +97,16 @@ public class PostServiceImpl implements PostService {
         List<Post> postList = postRepository.findByCategoryId(categoryId);
         return postList.stream().map((post) -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<PostDto> searchPostsByTitle(String title) {
+        List<Post> posts = postRepository.searchPostsByTitle(title);
+        return posts.stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDto> searchPostsByDescription(String description) {
+        List<Post> posts = postRepository.searchPostsByDescription(description);
+        return posts.stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+    }
 }

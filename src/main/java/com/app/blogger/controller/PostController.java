@@ -122,4 +122,34 @@ public class PostController {
         postService.deletePost(id);
         return new ResponseEntity<>("Post deleted successfully !", HttpStatus.OK);
     }
+
+    // Search posts by title
+    @Operation(
+            summary = "Search Post By Title REST API",
+            description = "Search Post By Title REST API is used to get a post from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<PostDto>> searchPostsByTitle(@PathVariable String title) {
+        List<PostDto> postDtoList = postService.searchPostsByTitle(title);
+        return ResponseEntity.ok(postDtoList);
+    }
+
+    // Search posts by description
+    @Operation(
+            summary = "Search Post By Description REST API",
+            description = "Search Post By Description REST API is used to get a post from database"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
+    @GetMapping("/description/{description}")
+    public ResponseEntity<List<PostDto>> searchPostsByDescription(@PathVariable String description) {
+        List<PostDto> postDtoList = postService.searchPostsByDescription(description);
+        return ResponseEntity.ok(postDtoList);
+    }
 }

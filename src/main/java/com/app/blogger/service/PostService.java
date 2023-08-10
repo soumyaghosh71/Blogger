@@ -1,5 +1,6 @@
 package com.app.blogger.service;
 
+import com.app.blogger.model.Post;
 import com.app.blogger.payload.PostDto;
 import com.app.blogger.payload.PostResponse;
 
@@ -17,4 +18,8 @@ public interface PostService {
     void deletePost(Long id);
 
     List<PostDto> getPostByCategory(Long categoryId);
+
+    List<PostDto> searchPostsByTitle(String title);
+
+    List<PostDto> searchPostsByDescription(String description);
 }
