@@ -133,8 +133,12 @@ public class PostController {
             description = "Http Status 200 SUCCESS"
     )
     @GetMapping("/title/{title}")
-    public ResponseEntity<List<PostDto>> searchPostsByTitle(@PathVariable String title) {
-        List<PostDto> postDtoList = postService.searchPostsByTitle(title);
+    public ResponseEntity<List<PostDto>> searchPostsByTitle(
+            @PathVariable String title,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
+    ) {
+        List<PostDto> postDtoList = postService.searchPostsByTitle(title, pageNo, pageSize);
         return ResponseEntity.ok(postDtoList);
     }
 
@@ -148,8 +152,12 @@ public class PostController {
             description = "Http Status 200 SUCCESS"
     )
     @GetMapping("/description/{description}")
-    public ResponseEntity<List<PostDto>> searchPostsByDescription(@PathVariable String description) {
-        List<PostDto> postDtoList = postService.searchPostsByDescription(description);
+    public ResponseEntity<List<PostDto>> searchPostsByDescription(
+            @PathVariable String description,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize
+    ) {
+        List<PostDto> postDtoList = postService.searchPostsByDescription(description, pageNo, pageSize);
         return ResponseEntity.ok(postDtoList);
     }
 }

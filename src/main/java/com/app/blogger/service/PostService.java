@@ -1,6 +1,5 @@
 package com.app.blogger.service;
 
-import com.app.blogger.model.Post;
 import com.app.blogger.payload.PostDto;
 import com.app.blogger.payload.PostResponse;
 
@@ -19,7 +18,7 @@ public interface PostService {
 
     List<PostDto> getPostByCategory(Long categoryId);
 
-    List<PostDto> searchPostsByTitle(String title);
+    List<PostDto> searchPostsByTitle(String title, int pageNo, int pageSize);
 
-    List<PostDto> searchPostsByDescription(String description);
+    List<PostDto> searchPostsByDescription(String description, int pageNo, int pageSize);
 }

@@ -99,14 +99,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> searchPostsByTitle(String title) {
-        List<Post> posts = postRepository.searchPostsByTitle(title);
+    public List<PostDto> searchPostsByTitle(String title, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<Post> posts = postRepository.searchPostsByTitle(title, pageable).getContent();
         return posts.stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public List<PostDto> searchPostsByDescription(String description) {
-        List<Post> posts = postRepository.searchPostsByDescription(description);
+    public List<PostDto> searchPostsByDescription(String description, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        List<Post> posts = postRepository.searchPostsByDescription(description, pageable).getContent();
         return posts.stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
     }
 }
