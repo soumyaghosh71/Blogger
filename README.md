@@ -7,11 +7,8 @@ A basic yet functional blogging platform built in Java, enabling users to create
 - [About](#about)  
 - [Features](#features)  
 - [Tech Stack](#tech-stack)  
-- [Installation & Setup](#installation--setup)  
-- [Usage](#usage)  
-- [Project Structure](#project-structure)  
-- [Contributing](#contributing)  
-- [License](#license)  
+- [Installation & Setup](#installation--setup)
+- [Contributing](#contributing)
 
 ## About
 
@@ -24,12 +21,12 @@ Use Blogger if you want a lightweight, self-hostable blog engine for experimenta
 - Create new blog posts  
 - View list of existing blog posts  
 - Add comments to blog posts  
-- Basic web interface (UI) for blog + comments  
-- (Future) — user authentication, post editing, rich text support  
+- User authentication, post editing
 
 ## Tech Stack
 
 - Language: Java
+- Framework: Sprint Boot
 - Build Tool: Maven (see `pom.xml`)
 - Project layout: typical Maven project (`src/` folder)
 
@@ -42,7 +39,7 @@ Use Blogger if you want a lightweight, self-hostable blog engine for experimenta
 2. Build using Maven
    ```bash
    mvn clean install
-2. Run the application
+3. Run the application
    ```bash
    mvn spring-boot:run
 ## Installation & Setup
